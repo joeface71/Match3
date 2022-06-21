@@ -6,6 +6,8 @@ public class GamePiece : MonoBehaviour
     public int xIndex;
     public int yIndex;
 
+    Board m_board;
+
     bool m_isMoving = false;
 
     public InterpType interpolation = InterpType.SmootherStep;
@@ -19,6 +21,20 @@ public class GamePiece : MonoBehaviour
         SmootherStep
     }
 
+    public MatchValue matchValue;
+    public enum MatchValue
+    {
+        Yellow,
+        Blue,
+        Magenta,
+        Indigo,
+        Green,
+        Teal,
+        Red,
+        Cyan,
+        Wild
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -28,16 +44,21 @@ public class GamePiece : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.RightArrow))
-        {
-            Move((int)transform.position.x + 2, (int)transform.position.y, 0.5f);
-        }
+        //if (Input.GetKeyDown(KeyCode.RightArrow))
+        //{
+        //    Move((int)transform.position.x + 2, (int)transform.position.y, 0.5f);
+        //}
 
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
-        {
-            Move((int)transform.position.x - 2, (int)transform.position.y, 0.5f);
-        }
+        //if (Input.GetKeyDown(KeyCode.LeftArrow))
+        //{
+        //    Move((int)transform.position.x - 2, (int)transform.position.y, 0.5f);
+        //}
 
+    }
+
+    public void Init(Board board)
+    {
+        m_board = board;
     }
 
     public void SetCoord(int x, int y)
@@ -69,8 +90,9 @@ public class GamePiece : MonoBehaviour
             if (Vector3.Distance(transform.position, destination) < 0.01f)
             {
                 reachedDestination = true;
-                transform.position = destination;
-                SetCoord((int)destination.x, (int)destination.y);
+
+                m_board.PlaceGamePiece(this, (int)destination.x, (int)destination.y);
+
                 break;
             }
 

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Board : MonoBehaviour
@@ -10,11 +11,16 @@ public class Board : MonoBehaviour
     public GameObject tilePrefab;
     public GameObject[] gamePiecePrefabs;
 
-    Tile[,] m_allTiles;
-    GamePiece[,] m_allGamePieces;
+    public float swapTime = 0.5f;
+
+    private Tile[,] m_allTiles;
+    private GamePiece[,] m_allGamePieces;
+
+    private Tile m_clickedTile;
+    private Tile m_targetTile;
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         m_allTiles = new Tile[width, height];
         m_allGamePieces = new GamePiece[width, height];
@@ -24,7 +30,7 @@ public class Board : MonoBehaviour
         FillRandom();
     }
 
-    void SetupTiles()
+    private void SetupTiles()
     {
         for (int i = 0; i < width; i++)
         {
@@ -43,7 +49,7 @@ public class Board : MonoBehaviour
         }
     }
 
-    void SetupCamera()
+    private void SetupCamera()
     {
         Camera.main.transform.position = new Vector3((float)(width - 1) / 2f, (float)(height - 1) / 2f, -10f); // cast ints as float otherwise you could lose data
 
@@ -55,7 +61,7 @@ public class Board : MonoBehaviour
         Camera.main.orthographicSize = (verticalSize > horizontalSize) ? verticalSize : horizontalSize;
     }
 
-    GameObject GetRandomGamePiece()
+    private GameObject GetRandomGamePiece()
     {
         int randomIndex = Random.Range(0, gamePiecePrefabs.Length);
 
@@ -67,7 +73,7 @@ public class Board : MonoBehaviour
         return gamePiecePrefabs[randomIndex];
     }
 
-    void PlaceGamePiece(GamePiece gamePiece, int x, int y)
+    public void PlaceGamePiece(GamePiece gamePiece, int x, int y)
     {
         if (gamePiece == null)
         {
@@ -77,10 +83,19 @@ public class Board : MonoBehaviour
 
         gamePiece.transform.position = new Vector3(x, y, 0);
         gamePiece.transform.rotation = Quaternion.identity;
+        if (IsWithinBounds(x, y))
+        {
+            m_allGamePieces[x, y] = gamePiece;
+        }
         gamePiece.SetCoord(x, y);
     }
 
-    void FillRandom()
+    private bool IsWithinBounds(int x, int y)
+    {
+        return (x >= 0 && x < width && y >= 0 && y < height);
+    }
+
+    private void FillRandom()
     {
         for (int i = 0; i < width; i++)
         {
@@ -90,11 +105,118 @@ public class Board : MonoBehaviour
 
                 if (randomPiece != null)
                 {
+                    randomPiece.GetComponent<GamePiece>().Init(this);
                     PlaceGamePiece(randomPiece.GetComponent<GamePiece>(), i, j);
+                    randomPiece.transform.parent = transform;
                 }
             }
         }
     }
 
+    public void ClickTile(Tile tile)
+    {
+        if (m_clickedTile == null)
+        {
+            m_clickedTile = tile;
+            //Debug.Log("Clicked tile: " + tile.name);
+        }
+    }
 
+    public void DragToTile(Tile tile)
+    {
+        if (m_clickedTile != null && IsNextTo(tile, m_clickedTile))
+        {
+            m_targetTile = tile;
+        }
+    }
+
+    public void ReleaseTile()
+    {
+        if (m_clickedTile != null && m_targetTile != null)
+        {
+            SwitchTiles(m_clickedTile, m_targetTile);
+        }
+
+        m_clickedTile = null;
+        m_targetTile = null;
+    }
+
+    private void SwitchTiles(Tile clickedTile, Tile targetTile)
+    {
+        // Correspond tiles in array to gamepieces in array
+        GamePiece clickedPiece = m_allGamePieces[clickedTile.xIndex, clickedTile.yIndex];
+        GamePiece targetPiece = m_allGamePieces[targetTile.xIndex, targetTile.yIndex];
+
+        clickedPiece.Move(targetPiece.xIndex, targetPiece.yIndex, swapTime);
+        targetPiece.Move(clickedPiece.xIndex, clickedPiece.yIndex, swapTime);
+    }
+
+    bool IsNextTo(Tile start, Tile end)
+    {
+        if (Mathf.Abs(start.xIndex - end.xIndex) == 1 && start.yIndex == end.yIndex)
+        {
+            return true;
+        }
+
+        if (Mathf.Abs(start.yIndex - end.yIndex) == 1 && start.xIndex == end.xIndex)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    List<GamePiece> FindMatches(int startX, int startY, Vector2 searchDirection, int minLength = 3)
+    {
+        List<GamePiece> matches = new List<GamePiece>();
+        GamePiece startPiece = null;
+
+        if (IsWithinBounds(startX, startY))
+        {
+            startPiece = m_allGamePieces[startX, startY];
+        }
+
+        if (startPiece != null)
+        {
+            matches.Add(startPiece);
+        }
+        else
+        {
+            return null;
+        }
+
+        int nextX;
+        int nextY;
+
+        int maxValue = (width > height) ? width : height;
+
+        for (int i = 1; i < maxValue - 1; i++)
+        {
+            nextX = startX + (int)Mathf.Clamp(searchDirection.x, -1, 1) * i;
+            nextY = startY + (int)Mathf.Clamp(searchDirection.y, -1, 1) * i;
+
+            if (!IsWithinBounds(nextX, nextY))
+            {
+                break;
+            }
+
+            GamePiece nextPiece = m_allGamePieces[nextX, nextY];
+
+            if (nextPiece.matchValue == startPiece.matchValue && !matches.Contains(nextPiece))
+            {
+                matches.Add(nextPiece);
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        if (matches.Count >= minLength)
+        {
+            return matches;
+        }
+
+        return null;
+    }
 }

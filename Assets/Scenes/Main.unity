@@ -322,6 +322,7 @@ MonoBehaviour:
   - {fileID: 7656784689509502938, guid: a53aec19fd9c6cd41a9ddb70bd6da9a8, type: 3}
   - {fileID: 6904804332687266616, guid: b4a0ff86760e5254b9202978e341455e, type: 3}
   - {fileID: 4901121519900845526, guid: a403106d448af7d43974e1ed810a7d33, type: 3}
+  swapTime: 0.5
 --- !u!4 &1021469426
 Transform:
   m_ObjectHideFlags: 0
