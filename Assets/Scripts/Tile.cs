@@ -2,12 +2,13 @@ using UnityEngine;
 
 public class Tile : MonoBehaviour
 {
+
     public int xIndex;
     public int yIndex;
 
     Board m_board;
 
-    // Start is called before the first frame update
+    // Use this for initialization
     void Start()
     {
 
@@ -18,29 +19,33 @@ public class Tile : MonoBehaviour
         xIndex = x;
         yIndex = y;
         m_board = board;
+
     }
 
-    private void OnMouseDown()
+    void OnMouseDown()
     {
         if (m_board != null)
         {
             m_board.ClickTile(this);
         }
+
     }
 
-    private void OnMouseEnter()
+    void OnMouseEnter()
     {
         if (m_board != null)
         {
             m_board.DragToTile(this);
         }
+
     }
 
-    private void OnMouseUp()
+    void OnMouseUp()
     {
         if (m_board != null)
         {
             m_board.ReleaseTile();
         }
+
     }
 }

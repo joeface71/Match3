@@ -1,8 +1,10 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Board : MonoBehaviour
 {
+
     public int width;
     public int height;
 
@@ -13,14 +15,13 @@ public class Board : MonoBehaviour
 
     public float swapTime = 0.5f;
 
-    private Tile[,] m_allTiles;
-    private GamePiece[,] m_allGamePieces;
+    Tile[,] m_allTiles;
+    GamePiece[,] m_allGamePieces;
 
-    private Tile m_clickedTile;
-    private Tile m_targetTile;
+    Tile m_clickedTile;
+    Tile m_targetTile;
 
-    // Start is called before the first frame update
-    private void Start()
+    void Start()
     {
         m_allTiles = new Tile[width, height];
         m_allGamePieces = new GamePiece[width, height];
@@ -28,9 +29,10 @@ public class Board : MonoBehaviour
         SetupTiles();
         SetupCamera();
         FillRandom();
+        HighlightMatches();
     }
 
-    private void SetupTiles()
+    void SetupTiles()
     {
         for (int i = 0; i < width; i++)
         {
@@ -45,57 +47,62 @@ public class Board : MonoBehaviour
                 tile.transform.parent = transform;
 
                 m_allTiles[i, j].Init(i, j, this);
+
             }
         }
     }
 
-    private void SetupCamera()
+    void SetupCamera()
     {
-        Camera.main.transform.position = new Vector3((float)(width - 1) / 2f, (float)(height - 1) / 2f, -10f); // cast ints as float otherwise you could lose data
+        Camera.main.transform.position = new Vector3((float)(width - 1) / 2f, (float)(height - 1) / 2f, -10f);
 
-        // determine whether to use height or width to determine orthographic size
         float aspectRatio = (float)Screen.width / (float)Screen.height;
+
         float verticalSize = (float)height / 2f + (float)borderSize;
+
         float horizontalSize = ((float)width / 2f + (float)borderSize) / aspectRatio;
 
         Camera.main.orthographicSize = (verticalSize > horizontalSize) ? verticalSize : horizontalSize;
+
     }
 
-    private GameObject GetRandomGamePiece()
+    GameObject GetRandomGamePiece()
     {
-        int randomIndex = Random.Range(0, gamePiecePrefabs.Length);
+        int randomIdx = Random.Range(0, gamePiecePrefabs.Length);
 
-        if (gamePiecePrefabs[randomIndex] == null)
+        if (gamePiecePrefabs[randomIdx] == null)
         {
-            Debug.LogWarning("Board: " + randomIndex + " does not contain a valid GamePiece prefab");
+            Debug.LogWarning("BOARD:  " + randomIdx + "does not contain a valid GamePiece prefab!");
         }
 
-        return gamePiecePrefabs[randomIndex];
+        return gamePiecePrefabs[randomIdx];
     }
 
     public void PlaceGamePiece(GamePiece gamePiece, int x, int y)
     {
         if (gamePiece == null)
         {
-            Debug.LogWarning("Board: Invalid GamePiece");
+            Debug.LogWarning("BOARD:  Invalid GamePiece!");
             return;
         }
 
         gamePiece.transform.position = new Vector3(x, y, 0);
         gamePiece.transform.rotation = Quaternion.identity;
+
         if (IsWithinBounds(x, y))
         {
             m_allGamePieces[x, y] = gamePiece;
         }
+
         gamePiece.SetCoord(x, y);
     }
 
-    private bool IsWithinBounds(int x, int y)
+    bool IsWithinBounds(int x, int y)
     {
         return (x >= 0 && x < width && y >= 0 && y < height);
     }
 
-    private void FillRandom()
+    void FillRandom()
     {
         for (int i = 0; i < width; i++)
         {
@@ -108,7 +115,11 @@ public class Board : MonoBehaviour
                     randomPiece.GetComponent<GamePiece>().Init(this);
                     PlaceGamePiece(randomPiece.GetComponent<GamePiece>(), i, j);
                     randomPiece.transform.parent = transform;
+
                 }
+
+
+
             }
         }
     }
@@ -118,7 +129,7 @@ public class Board : MonoBehaviour
         if (m_clickedTile == null)
         {
             m_clickedTile = tile;
-            //Debug.Log("Clicked tile: " + tile.name);
+            //Debug.Log("clicked tile: " + tile.name);
         }
     }
 
@@ -137,18 +148,21 @@ public class Board : MonoBehaviour
             SwitchTiles(m_clickedTile, m_targetTile);
         }
 
+
         m_clickedTile = null;
         m_targetTile = null;
     }
 
-    private void SwitchTiles(Tile clickedTile, Tile targetTile)
+    void SwitchTiles(Tile clickedTile, Tile targetTile)
     {
-        // Correspond tiles in array to gamepieces in array
+
         GamePiece clickedPiece = m_allGamePieces[clickedTile.xIndex, clickedTile.yIndex];
         GamePiece targetPiece = m_allGamePieces[targetTile.xIndex, targetTile.yIndex];
 
-        clickedPiece.Move(targetPiece.xIndex, targetPiece.yIndex, swapTime);
-        targetPiece.Move(clickedPiece.xIndex, clickedPiece.yIndex, swapTime);
+
+        clickedPiece.Move(targetTile.xIndex, targetTile.yIndex, swapTime);
+        targetPiece.Move(clickedTile.xIndex, clickedTile.yIndex, swapTime);
+
     }
 
     bool IsNextTo(Tile start, Tile end)
@@ -166,9 +180,14 @@ public class Board : MonoBehaviour
         return false;
     }
 
+    // general search method; specify a starting coordinate (startX, startY) and use a Vector2 for direction
+    // i.e. (1,0) = right, (-1,0) = left, (0,1) = up, (0,-1) = down; minLength is minimum number to be considered
+    // a match
+
     List<GamePiece> FindMatches(int startX, int startY, Vector2 searchDirection, int minLength = 3)
     {
         List<GamePiece> matches = new List<GamePiece>();
+
         GamePiece startPiece = null;
 
         if (IsWithinBounds(startX, startY))
@@ -180,6 +199,7 @@ public class Board : MonoBehaviour
         {
             matches.Add(startPiece);
         }
+
         else
         {
             return null;
@@ -206,6 +226,7 @@ public class Board : MonoBehaviour
             {
                 matches.Add(nextPiece);
             }
+
             else
             {
                 break;
@@ -218,5 +239,86 @@ public class Board : MonoBehaviour
         }
 
         return null;
+
     }
+
+    List<GamePiece> FindVerticalMatches(int startX, int startY, int minLength = 3)
+    {
+        List<GamePiece> upwardMatches = FindMatches(startX, startY, new Vector2(0, 1), 2);
+        List<GamePiece> downwardMatches = FindMatches(startX, startY, new Vector2(0, -1), 2);
+
+        if (upwardMatches == null)
+        {
+            upwardMatches = new List<GamePiece>();
+        }
+
+        if (downwardMatches == null)
+        {
+            downwardMatches = new List<GamePiece>();
+        }
+
+        var combinedMatches = upwardMatches.Union(downwardMatches).ToList();
+
+        return (combinedMatches.Count >= minLength) ? combinedMatches : null;
+
+    }
+
+    List<GamePiece> FindHorizontalMatches(int startX, int startY, int minLength = 3)
+    {
+        List<GamePiece> rightMatches = FindMatches(startX, startY, new Vector2(1, 0), 2);
+        List<GamePiece> leftMatches = FindMatches(startX, startY, new Vector2(-1, 0), 2);
+
+        if (rightMatches == null)
+        {
+            rightMatches = new List<GamePiece>();
+        }
+
+        if (leftMatches == null)
+        {
+            leftMatches = new List<GamePiece>();
+        }
+
+        var combinedMatches = rightMatches.Union(leftMatches).ToList();
+
+        return (combinedMatches.Count >= minLength) ? combinedMatches : null;
+
+    }
+
+    void HighlightMatches()
+    {
+        for (int i = 0; i < width; i++)
+        {
+            for (int j = 0; j < height; j++)
+            {
+                SpriteRenderer spriteRenderer = m_allTiles[i, j].GetComponent<SpriteRenderer>();
+                spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, 0);
+
+                List<GamePiece> horizMatches = FindHorizontalMatches(i, j, 3);
+                List<GamePiece> vertMatches = FindVerticalMatches(i, j, 3);
+
+                if (horizMatches == null)
+                {
+                    horizMatches = new List<GamePiece>();
+                }
+
+                if (vertMatches == null)
+                {
+                    vertMatches = new List<GamePiece>();
+                }
+
+                var combinedMatches = horizMatches.Union(vertMatches).ToList();
+
+                if (combinedMatches.Count > 0)
+                {
+                    foreach (GamePiece piece in combinedMatches)
+                    {
+                        spriteRenderer = m_allTiles[piece.xIndex, piece.yIndex].GetComponent<SpriteRenderer>();
+                        spriteRenderer.color = piece.GetComponent<SpriteRenderer>().color;
+                    }
+                }
+            }
+        }
+    }
+
+
 }
