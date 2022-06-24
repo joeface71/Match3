@@ -118,7 +118,8 @@ public class Board : MonoBehaviour
                     while (HasMatchOnFill(i, j))
                     {
                         ClearPieceAt(i, j);
-                        piece = FillRandomAt(i, j);
+                        piece = FillRandomAt(i, j, falseYOffset, moveTime);
+                        iterations++;
 
                         if (iterations >= maxInterations)
                         {
