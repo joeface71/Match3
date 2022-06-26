@@ -325,18 +325,18 @@ MonoBehaviour:
   - {fileID: 4901121519900845526, guid: a403106d448af7d43974e1ed810a7d33, type: 3}
   swapTime: 0.5
   startingTiles:
-  - tilePrefab: {fileID: 4888637590879140926, guid: 8865ac490ef86044a998293839a7106c, type: 3}
+  - tilePrefab: {fileID: 6542200935852511495, guid: 7a4cbc2b49a720948b5f968c96c6c5d0, type: 3}
+    x: 1
+    y: 1
+    z: 0
+  - tilePrefab: {fileID: 6542200935852511495, guid: 7a4cbc2b49a720948b5f968c96c6c5d0, type: 3}
+    x: 2
+    y: 1
+    z: 0
+  - tilePrefab: {fileID: 8202154768022266768, guid: 02ec1bd49c8d62b4ea6ed5c69ee302e0, type: 3}
     x: 3
-    y: 3
-    z: 1
-  - tilePrefab: {fileID: 4888637590879140926, guid: 8865ac490ef86044a998293839a7106c, type: 3}
-    x: 4
-    y: 3
-    z: 1
-  - tilePrefab: {fileID: 4888637590879140926, guid: 8865ac490ef86044a998293839a7106c, type: 3}
-    x: 5
-    y: 3
-    z: 1
+    y: 1
+    z: 0
 --- !u!4 &1021469426
 Transform:
   m_ObjectHideFlags: 0
@@ -351,6 +351,53 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1195497888
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1195497890}
+  - component: {fileID: 1195497889}
+  m_Layer: 0
+  m_Name: ParticleManager
+  m_TagString: ParticleManager
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1195497889
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1195497888}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 602995810199d5c4ba295bb8c512bcc3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clearFXPrefab: {fileID: 7649762576851019880, guid: 985d8c000cf094742a2bbb746e940d20, type: 3}
+  breakFXPrefab: {fileID: 1239083723762229031, guid: f4cb0fc635ddab64992c741257247b65, type: 3}
+  doubleBreakFXPrefab: {fileID: 1954776911801945127, guid: 022aaf104e184fc4c852da5ec7d8c039, type: 3}
+--- !u!4 &1195497890
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1195497888}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.34491074, y: 2.912848, z: -0.14452976}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1594089164
 GameObject:
