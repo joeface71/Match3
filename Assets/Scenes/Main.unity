@@ -323,6 +323,9 @@ MonoBehaviour:
   - {fileID: 7656784689509502938, guid: a53aec19fd9c6cd41a9ddb70bd6da9a8, type: 3}
   - {fileID: 6904804332687266616, guid: b4a0ff86760e5254b9202978e341455e, type: 3}
   - {fileID: 4901121519900845526, guid: a403106d448af7d43974e1ed810a7d33, type: 3}
+  adjacentBombPrefab: {fileID: 1182637913265628729, guid: 10049cec034f5b04d87db723377d6d21, type: 3}
+  columnBombPrefab: {fileID: 2580162105079633606, guid: 5f8fab0069dddc54895fe7e48430173f, type: 3}
+  rowBombPrefab: {fileID: 1822490004381641706, guid: c564ee623f323864ca6889b54a3a1696, type: 3}
   swapTime: 0.5
   startingTiles:
   - prefab: {fileID: 6542200935852511495, guid: 7a4cbc2b49a720948b5f968c96c6c5d0, type: 3}
@@ -334,17 +337,37 @@ MonoBehaviour:
     y: 1
     z: 0
   startingGamePieces:
-  - prefab: {fileID: 1822490004381641706, guid: c564ee623f323864ca6889b54a3a1696, type: 3}
+  - prefab: {fileID: 6904804332687266616, guid: b4a0ff86760e5254b9202978e341455e, type: 3}
     x: 3
     y: 3
     z: 0
-  - prefab: {fileID: 2580162105079633606, guid: 5f8fab0069dddc54895fe7e48430173f, type: 3}
+  - prefab: {fileID: 6904804332687266616, guid: b4a0ff86760e5254b9202978e341455e, type: 3}
     x: 3
     y: 4
     z: 0
-  - prefab: {fileID: 1182637913265628729, guid: 10049cec034f5b04d87db723377d6d21, type: 3}
+  - prefab: {fileID: 6904804332687266616, guid: b4a0ff86760e5254b9202978e341455e, type: 3}
     x: 3
     y: 6
+    z: 0
+  - prefab: {fileID: 6904804332687266616, guid: b4a0ff86760e5254b9202978e341455e, type: 3}
+    x: 4
+    y: 5
+    z: 0
+  - prefab: {fileID: 6904804332687266616, guid: b4a0ff86760e5254b9202978e341455e, type: 3}
+    x: 5
+    y: 4
+    z: 0
+  - prefab: {fileID: 6904804332687266616, guid: b4a0ff86760e5254b9202978e341455e, type: 3}
+    x: 6
+    y: 4
+    z: 0
+  - prefab: {fileID: 6904804332687266616, guid: b4a0ff86760e5254b9202978e341455e, type: 3}
+    x: 5
+    y: 5
+    z: 0
+  - prefab: {fileID: 3620341944957053460, guid: 8748ea37a5887a04d8d1cc64b97b4709, type: 3}
+    x: 4
+    y: 7
     z: 0
   fillYOffset: 10
   fillMoveTime: 0.5
@@ -395,6 +418,7 @@ MonoBehaviour:
   clearFXPrefab: {fileID: 7649762576851019880, guid: 985d8c000cf094742a2bbb746e940d20, type: 3}
   breakFXPrefab: {fileID: 1239083723762229031, guid: f4cb0fc635ddab64992c741257247b65, type: 3}
   doubleBreakFXPrefab: {fileID: 1954776911801945127, guid: 022aaf104e184fc4c852da5ec7d8c039, type: 3}
+  bombFXPrefab: {fileID: 2552414722595327918, guid: 66409195d0b55e04f8ac1f1c5d0feca4, type: 3}
 --- !u!4 &1195497890
 Transform:
   m_ObjectHideFlags: 0
