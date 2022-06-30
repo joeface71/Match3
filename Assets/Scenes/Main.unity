@@ -326,6 +326,13 @@ MonoBehaviour:
   adjacentBombPrefab: {fileID: 1182637913265628729, guid: 10049cec034f5b04d87db723377d6d21, type: 3}
   columnBombPrefab: {fileID: 2580162105079633606, guid: 5f8fab0069dddc54895fe7e48430173f, type: 3}
   rowBombPrefab: {fileID: 1822490004381641706, guid: c564ee623f323864ca6889b54a3a1696, type: 3}
+  colorBombPrefab: {fileID: 6379028687761038138, guid: 208d345dc6d99414387b7ad3a0686141, type: 3}
+  maxCollectibles: 3
+  collectiblecount: 0
+  chanceForCollectible: 0.339
+  collectiblePrefabs:
+  - {fileID: 1274118375437732263, guid: 8655a2347195c374ab1f02a284824a0d, type: 3}
+  - {fileID: 2847984723477437260, guid: 5c1ee7475493e6e41827d822fb2a4879, type: 3}
   swapTime: 0.5
   startingTiles:
   - prefab: {fileID: 6542200935852511495, guid: 7a4cbc2b49a720948b5f968c96c6c5d0, type: 3}
@@ -337,37 +344,21 @@ MonoBehaviour:
     y: 1
     z: 0
   startingGamePieces:
-  - prefab: {fileID: 6904804332687266616, guid: b4a0ff86760e5254b9202978e341455e, type: 3}
-    x: 3
-    y: 3
+  - prefab: {fileID: 2847984723477437260, guid: 5c1ee7475493e6e41827d822fb2a4879, type: 3}
+    x: 4
+    y: 8
+    z: 0
+  - prefab: {fileID: 6698703918176704065, guid: 742a15cb45518f0448227ed74d8c124e, type: 3}
+    x: 4
+    y: 5
     z: 0
   - prefab: {fileID: 6904804332687266616, guid: b4a0ff86760e5254b9202978e341455e, type: 3}
-    x: 3
+    x: 4
     y: 4
     z: 0
   - prefab: {fileID: 6904804332687266616, guid: b4a0ff86760e5254b9202978e341455e, type: 3}
-    x: 3
+    x: 5
     y: 6
-    z: 0
-  - prefab: {fileID: 6904804332687266616, guid: b4a0ff86760e5254b9202978e341455e, type: 3}
-    x: 4
-    y: 5
-    z: 0
-  - prefab: {fileID: 6904804332687266616, guid: b4a0ff86760e5254b9202978e341455e, type: 3}
-    x: 5
-    y: 4
-    z: 0
-  - prefab: {fileID: 6904804332687266616, guid: b4a0ff86760e5254b9202978e341455e, type: 3}
-    x: 6
-    y: 4
-    z: 0
-  - prefab: {fileID: 6904804332687266616, guid: b4a0ff86760e5254b9202978e341455e, type: 3}
-    x: 5
-    y: 5
-    z: 0
-  - prefab: {fileID: 3620341944957053460, guid: 8748ea37a5887a04d8d1cc64b97b4709, type: 3}
-    x: 4
-    y: 7
     z: 0
   fillYOffset: 10
   fillMoveTime: 0.5
