@@ -3,15 +3,20 @@ using UnityEngine.UI;
 
 public class ScoreManager : Singleton<ScoreManager>
 {
-    int m_currentScore = 0;
-    int m_counterValue = 0;
-    int m_increment = 5;
+    private int m_currentScore = 0;
+
+    public int CurrentScore
+    {
+        get { return m_currentScore; }
+    }
+
+    private int m_counterValue = 0;
+    private int m_increment = 5;
 
     public Text scoreText;
 
-
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         UpdateScoreText(m_currentScore);
     }
